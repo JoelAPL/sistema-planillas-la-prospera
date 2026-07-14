@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Próspera, S.A. — Sistema de Planillas</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏭</text></svg>">
+</head>
+<body>
+<header class="topbar no-print">
+  <div class="brand">
+    <span class="brand-icon">🏭</span>
+    <div>
+      <h1>La Próspera, S.A.</h1>
+      <p>Sistema de Planillas · Fábrica de Cemento · Juan Díaz, Calle 200</p>
+    </div>
+  </div>
+  <nav id="mainNav">
+    <a href="#/inicio" data-route="inicio">Inicio</a>
+    <a href="#/personal" data-route="personal">Personal</a>
+    <a href="#/planilla" data-route="planilla">Planilla</a>
+    <a href="#/informes" data-route="informes">Informes</a>
+    <a href="#/config" data-route="config">Configuración</a>
+  </nav>
+</header>
+
+<main id="app"></main>
+
+<footer class="footer no-print">
+  <p>Universidad Tecnológica de Panamá · Examen Semestral · Contabilidad General — Software de Planillas</p>
+</footer>
+
+<div id="toast" class="toast" role="status"></div>
+<script src="app.js"></script>
+</body>
+</html>
