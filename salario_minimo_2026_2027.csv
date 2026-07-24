@@ -1,0 +1,100 @@
+Actividad Economica,Categoria,Region 1,Region 2
+"Agricultura, Ganaderia, Caza, Silvicultura, Acuicultura, Pesca (Nacional)",Pequeña Empresa,1.64,1.64
+"Agricultura, Ganaderia, Caza, Silvicultura, Acuicultura, Pesca (Nacional)",Gran Empresa (11 empleados o mas),2.10,2.10
+Actividades Bananeras (Nacional),,2.58,2.58
+Pesca (Nacional),Artesanal,2.30,2.30
+Pesca (Nacional),Industrial,2.65,2.65
+Agroindustrias,Pequeña Empresa (parte agricola),1.67,1.67
+Agroindustrias,Gran Empresa (parte agricola),2.12,2.12
+Agroindustrias,Pequeña Empresa (parte procesamiento),2.37,2.00
+Agroindustrias,Gran Empresa (parte procesamiento),3.04,2.49
+Explotacion de Canteras - Actividades Areneras (Nacional),,3.20,3.20
+Explotacion de Canteras - Minas Metalicas (Nacional),,3.39,3.39
+Explotacion de Canteras - Minas No Metalicas (Nacional),,3.20,3.20
+Industrias Manufactureras,Pequeña Empresa,2.32,1.95
+Industrias Manufactureras,Gran Empresa (16 empleados o mas),3.13,2.58
+"Destilacion, Rectificacion y mezcla de Bebidas Alcoholicas; Fabricacion de Pinturas, Barnices y productos de revestimiento",,3.08,2.61
+Fabricacion de Cemento y/o Concreto,,3.39,3.24
+"Reparacion, Mantenimiento de maquinaria y equipo de refrigeracion",,3.15,2.57
+Procesamiento de la Caña de Azucar (Nacional),,3.12,3.12
+"Suministro de Electric., Gas, Vapor, Aire Acondicionado (Nacional)",,3.50,3.50
+Produccion de Hielo,,3.07,2.53
+"Suministro de Agua, Alcantarillado, Gestion de Desechos y Actv. de Saneamiento (Nacional)",,3.50,3.50
+Alcantarillado,,3.18,2.63
+"Recoleccion, Tratamiento y Eliminacion de Desechos",,3.21,2.67
+Procesamiento y Recuperacion de Materiales de desecho,,3.04,2.51
+Construccion,,3.51,3.30
+Drenaje de Tierras Agricolas y Bosques (Nacional),,2.12,2.12
+Comercio al por Mayor y en Comisiones,,3.02,2.48
+Venta de productos y subproductos derivados de la Caña de Azucar (Nacional),,3.02,3.02
+Tanques de Combustible,,3.04,2.50
+Comercio al por Menor,Pequeña Empresa,2.37,1.99
+Comercio al por Menor,Gran Empresa (11 empleados o mas),3.02,2.48
+Supermercados (empresas con 5 o mas sucursales),,3.09,2.54
+Estaciones de combustible,,3.02,2.48
+"Zonas Francas, Zonas Economicas Especiales",,3.77,2.52
+Zona Libre de Colon,,3.44,
+Hoteles,Pequeña Empresa,2.38,1.98
+Hoteles,Gran Empresa (11 empleados o mas),2.96,2.43
+"Hoteles y Resorts con Franquicias; Hoteles con mas de 200 habitaciones; Hoteles de Ocasion, Moteles, Pensiones y Residenciales",,3.10,2.55
+Restaurantes,Pequeña Empresa,2.32,1.95
+Restaurantes,Gran Empresa (11 empleados o mas),3.09,2.54
+"Discotecas, Bares y Cantinas (Nacional)",,3.40,3.40
+Transporte,,3.16,2.61
+Transporte de carga en zonas francas o economicas especiales,Pequeña Empresa (hasta 10 trabajadores),3.47,2.58
+Transporte de carga en zonas francas o economicas especiales,Gran Empresa (11 empleados o mas),3.49,2.60
+"Transporte por Via Acuatica, Via Aerea y Activ. Complem.",Pequeña Empresa (hasta 10 trabajadores),3.16,2.58
+"Transporte por Via Acuatica, Via Aerea y Activ. Complem.",Gran Empresa (11 empleados o mas),3.18,2.60
+Trabajadores Portuarios (Nacional),,3.64,3.64
+Aeropuertos Internacionales,,3.84,3.84
+Conductores de Buses (Nacional),,3.47,3.47
+Conductores de Buses Colegiales,,3.02,2.49
+Tripulantes de Cabina de Vuelos Internacionales (Nacional),,5.01,5.01
+"Almacenamiento, Depositos y Correos",,3.02,2.48
+Informacion y Comunicacion (Nacional),,3.16,3.16
+Actividades de Edicion,,3.16,2.62
+"Produccion de Programas de Radio y TV; Produccion de Peliculas, Videos, Sonidos; Salas de Cine; Agencias de Noticias",,3.16,2.61
+"Telecomunicaciones, Difusion Television (Nacional)",,3.47,3.47
+Difusion de Radio - Licencia Nacional (Nacional),,3.47,3.47
+Difusion de Radio - Licencia Local (Nacional),,3.40,3.40
+Camarografos (Nacional),,3.47,3.47
+Actividades Financieras y de Seguro (Nacional),,3.58,3.58
+Casas de Empeño (Nacional),,3.14,3.14
+Actividades Inmobiliarias,,3.47,3.10
+Centros Comerciales (mas de 50 locales) (Nacional),,3.47,3.47
+Actv. Administrativas y Servicios de Apoyo (Alquiler y Arrendamiento) (Nacional),,3.12,3.12
+Renta y Alquiler de Vehiculos Automotores (Nacional),,3.43,3.43
+Actividades de Internet Cafes,,2.82,2.62
+Activ. de las Agencias de Empleo (Nacional),,3.16,3.16
+"Activ. Agencias Viajes, Operadores Turisticos y Serv. Reserva",,3.09,2.44
+Actividades de Servicio a Edificios y Paisajes (Nacional),,2.98,2.98
+"Activ. de Serv. de Mantenimiento y Cuidado de Paisajes (Jardines, Areas Verdes) (Nacional)",,2.12,2.12
+"Activ. de Oficinas Administ., Soporte de Negocios; Fotocopiados (Nacional)",,2.98,2.98
+Activ. de Seguridad e Investig. (Agencias Seguridad y Vigilancia) (Nacional),,3.04,3.04
+"Actv. Profesionales, Cientificas y Tecnicas (Nacional)",,3.02,3.02
+Actividades Veterinarias,,3.02,2.48
+"Firmas de Abogados, Contabilidad y Auditoria (15 empleados o mas) (Nacional)",,3.18,3.18
+"Firmas de Abogados, Contabilidad y Auditoria (14 o menos empleados) (Nacional)",,2.89,2.89
+Abogados (Nacional),,3.70,3.70
+"Periodistas de Radio, Periodicos y Television (Nacional)",,3.45,3.45
+Mecanicos de Transporte Aereo (Nacional),,4.92,4.92
+Mecanicos de Transporte Terrestre (Nacional),,3.45,3.45
+Mecanicos de Transporte Maritimo (Nacional),,3.83,3.83
+Enseñanza (Personal Administrativo),,3.09,2.52
+Servicios Sociales y Relacionados con la Salud Humana,,3.22,2.64
+Clinicas de Salud y Hospitales,,3.54,2.66
+Tecnicos de Salud (Nacional),,3.54,3.54
+"Artes, Entretenimiento y Creatividad (Nacional)",,3.11,3.11
+Actividades de juegos de azar y apuestas (Nacional),,3.63,3.63
+"Casinos (Nacional) - Talladores, Gerente de Casino, Jefes de Sala, Operadores de CCTV",,3.72,3.72
+"Casinos (Nacional) - Seguridad, Aseadores, Saloneros, Oficinistas, Cajeros, etc.",,3.61,3.61
+Gimnasios (Nacional),,3.43,3.43
+Otras Actividades de Servicios,,3.12,2.55
+Organizaciones Sin Fines de Lucro,,2.98,2.45
+Reparacion y Mantenimiento de Computadoras (Nacional),,2.96,2.96
+Reparacion y Mantenimiento de Enseres de uso Personal y Domestico,Pequeña Empresa,2.32,1.94
+Reparacion y Mantenimiento de Enseres de uso Personal y Domestico,Gran Empresa (11 empleados o mas),2.98,2.52
+Propiedades Horizontales Residenciales (mas de 10 plantas) y Asoc. de Inquilinos (Nacional),,3.43,3.43
+"Spas, Clinicas Esteticas",,3.43,2.57
+Actividades de Organizaciones y Organos Extraterritoriales (Nacional),,3.16,3.16
+"Trabajador Domestico (monto MENSUAL, no por hora)",,350.00,320.00
