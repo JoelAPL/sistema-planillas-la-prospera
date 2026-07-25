@@ -321,8 +321,8 @@ function viewPersonal(){
     <form id="empForm" onsubmit="return guardarEmp(event)">
       <input type="hidden" id="f_id">
       <div class="form-grid">
-        <div class="field wide"><label>Nombre completo *</label><input id="f_nombre" required placeholder="Ej. Rubén Palacios"></div>
-        <div class="field"><label>Cédula *</label><input id="f_cedula" required placeholder="Ej. 4-590-678"></div>
+        <div class="field wide"><label>Nombre completo *</label><input id="f_nombre" required placeholder="Ej. Omero Urriola"></div>
+        <div class="field"><label>Cédula *</label><input id="f_cedula" required placeholder="Ej. 8-320-344"></div>
         <div class="field"><label>Estado civil</label>
           <select id="f_estado"><option value="soltero">Soltero(a)</option><option value="casado">Casado(a) / Unido(a)</option></select>
         </div>
