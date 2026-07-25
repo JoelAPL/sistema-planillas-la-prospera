@@ -88,7 +88,7 @@ const SEED = [
 // Novedades del Grupo 6 (2da quincena junio 2026) por cédula+grupo
 const SEED_NOVEDADES = {
   // Omero: 4 horas extra el día 23 + 4 horas el día 30 = 8 horas (recargo 25% asumido, el documento no lo especifica)
-  "6|Omero Urriola":        {horasExtras:8, recargo:25, adelanto:0},
+  "6|Omero Urriola":        {horasDiurnas:8, adelanto:0},
   // Judith: prima de producción — después de 100,000 kilos, $2.00 por cada 400 kilos; producción adicional 70,000 kilos
   // (70,000 / 400) x $2.00 = $350.00
   "6|Judith Villalobos":    {primaProd:350, adelanto:0},
@@ -107,10 +107,17 @@ function calcularFila(emp, nov, bonifMonto){
   const salarioBaseQ = r2(mensual / 2);
 
   // --- Horas extras: hora ordinaria = mensual / 4.3333 / horas semanales
+  // Recargos del Código de Trabajo: diurna 25%, mixta o día de descanso 50%, nocturna 75%.
+  // Se capturan por separado porque un mismo colaborador puede tener horas de varios tipos.
   const tarifaHora = mensual / 4.3333 / cfg.horasSemana;
-  const horas = Number(nov.horasExtras)||0;
-  const recargo = Number(nov.recargo)||25;
-  const extras = r2(horas * tarifaHora * (1 + recargo/100));
+  const hDiurnas   = Number(nov.horasDiurnas)   || Number(nov.horasExtras) || 0; // horasExtras: formato anterior
+  const hMixtas    = Number(nov.horasMixtas)    || 0;
+  const hNocturnas = Number(nov.horasNocturnas) || 0;
+  const extrasDiurnas   = r2(hDiurnas   * tarifaHora * 1.25);
+  const extrasMixtas    = r2(hMixtas    * tarifaHora * 1.50);
+  const extrasNocturnas = r2(hNocturnas * tarifaHora * 1.75);
+  const horas  = r2(hDiurnas + hMixtas + hNocturnas);
+  const extras = r2(extrasDiurnas + extrasMixtas + extrasNocturnas);
 
   // --- Comisión sobre ventas
   const ventas = Number(nov.ventas)||0;
@@ -165,7 +172,8 @@ function calcularFila(emp, nov, bonifMonto){
     empleadoId: emp.id, nombre: emp.nombre, cedula: emp.cedula, cargo: emp.cargo,
     estadoCivil: emp.estadoCivil, declaraConjunta: !!emp.declaraConjunta,
     salarioMensual: r2(mensual), salarioBase: salarioBaseQ,
-    horasExtras: horas, recargo, extras, tarifaHora: r2(tarifaHora),
+    horasExtras: horas, extras, tarifaHora: r2(tarifaHora),
+    hDiurnas, hMixtas, hNocturnas, extrasDiurnas, extrasMixtas, extrasNocturnas,
     ventas, comisionPct, comision, bonif, bonifMonto: r2(Number(bonifMonto)||0),
     dietas, dietaExenta, dietaGravable, prima, primaExenta, primaGravable,
     otrosIngresos, salarioTotal, baseCSS,
@@ -590,20 +598,22 @@ window.renderCaptura = function(){
   const emps = state.empleados.filter(e => g==="todos" || String(e.grupo)===g);
   $("#capturaZona").innerHTML = emps.map(e => {
     const mensual = salarioMensualDe(e);
+    const tHora = mensual / 4.3333 / state.config.horasSemana;
     const descTxt = (e.descuentos||[]).map(d=>`${esc(d.concepto)} ${fmt(d.periodicidad==="mensual"?d.monto/2:d.monto)}/quincena`).join(" · ") || "Sin descuentos recurrentes";
     return `<div class="emp-capture" data-id="${e.id}">
       <header>
         <div><b>${esc(e.nombre)}</b> <span class="muted small">· ${esc(e.cargo)} · ${esc(e.cedula)} · Grupo ${e.grupo||"—"}</span></div>
         <span class="badge">Salario: ${fmt(mensual)}/mes → ${fmt(mensual/2)}/quincena</span>
       </header>
+      <p class="small muted" style="margin:-.2rem 0 .5rem">
+        Tarifa por hora calculada automáticamente:
+        <b>${fmt(tHora)}</b> (${fnum(mensual)} ÷ 4.3333 semanas ÷ ${state.config.horasSemana} h) ·
+        diurna ${fmt(tHora*1.25)} · mixta ${fmt(tHora*1.5)} · nocturna ${fmt(tHora*1.75)}
+      </p>
       <div class="inputs">
-        <div class="field"><label>Horas extras</label><input class="n_horas" type="number" step="0.5" min="0" value="0"></div>
-        <div class="field"><label>Recargo extras</label>
-          <select class="n_recargo">
-            <option value="25">25% (diurna)</option>
-            <option value="50">50% (mixta / día de descanso)</option>
-            <option value="75">75% (nocturna)</option>
-          </select></div>
+        <div class="field"><label>H. extras diurnas <span class="muted">(+25%)</span></label><input class="n_hdiurnas" type="number" step="0.5" min="0" value="0"></div>
+        <div class="field"><label>H. extras mixtas <span class="muted">(+50%)</span></label><input class="n_hmixtas" type="number" step="0.5" min="0" value="0"></div>
+        <div class="field"><label>H. extras nocturnas <span class="muted">(+75%)</span></label><input class="n_hnocturnas" type="number" step="0.5" min="0" value="0"></div>
         <div class="field"><label>Ventas del período (B/.)</label><input class="n_ventas" type="number" step="0.01" min="0" value="0"></div>
         <div class="field"><label>% Comisión</label><input class="n_compct" type="number" step="0.1" min="0" value="${e.grupo===2?2:0}"></div>
         <div class="field"><label>Dietas (B/.)</label><input class="n_dietas" type="number" step="0.01" min="0" value="0"></div>
@@ -623,8 +633,9 @@ window.precargarNovedades = function(){
     const nov = SEED_NOVEDADES[`${e.grupo}|${e.nombre}`];
     if(!nov) return;
     n++;
-    div.querySelector(".n_horas").value = nov.horasExtras||0;
-    div.querySelector(".n_recargo").value = nov.recargo||25;
+    div.querySelector(".n_hdiurnas").value   = nov.horasDiurnas||0;
+    div.querySelector(".n_hmixtas").value    = nov.horasMixtas||0;
+    div.querySelector(".n_hnocturnas").value = nov.horasNocturnas||0;
     div.querySelector(".n_ventas").value = nov.ventas||0;
     div.querySelector(".n_compct").value = nov.comisionPct||(e.grupo===2?2:0);
     div.querySelector(".n_dietas").value = nov.dietas||0;
@@ -643,8 +654,9 @@ window.calcularPlanilla = function(){
     const e = state.empleados.find(x => x.id === div.dataset.id);
     if(!e) return;
     const nov = {
-      horasExtras: div.querySelector(".n_horas").value,
-      recargo: div.querySelector(".n_recargo").value,
+      horasDiurnas:   div.querySelector(".n_hdiurnas").value,
+      horasMixtas:    div.querySelector(".n_hmixtas").value,
+      horasNocturnas: div.querySelector(".n_hnocturnas").value,
       ventas: div.querySelector(".n_ventas").value,
       comisionPct: div.querySelector(".n_compct").value,
       dietas: div.querySelector(".n_dietas").value,
@@ -848,7 +860,11 @@ function viewInforme(id, tab){
       correo += `${encodeURIComponent(f.nombre)} — Neto: B/. ${encodeURIComponent(fnum(f.neto))}%0D%0A`;
       const descLines = f.descuentosDetalle.map(d=>`<div class="line"><span>${esc(d.concepto)}</span><span>${fnum(d.monto)}</span></div>`).join("");
       const ingresoLines = [
-        f.extras>0 ? `<div class="line"><span>Horas extras (${f.horasExtras} h × ${fnum(f.tarifaHora)} + ${f.recargo}%)</span><span>${fnum(f.extras)}</span></div>`:"",
+        f.extrasDiurnas>0   ? `<div class="line"><span>H. extras diurnas (${f.hDiurnas} h × ${fnum(f.tarifaHora)} + 25%)</span><span>${fnum(f.extrasDiurnas)}</span></div>`:"",
+        f.extrasMixtas>0    ? `<div class="line"><span>H. extras mixtas (${f.hMixtas} h × ${fnum(f.tarifaHora)} + 50%)</span><span>${fnum(f.extrasMixtas)}</span></div>`:"",
+        f.extrasNocturnas>0 ? `<div class="line"><span>H. extras nocturnas (${f.hNocturnas} h × ${fnum(f.tarifaHora)} + 75%)</span><span>${fnum(f.extrasNocturnas)}</span></div>`:"",
+        // planillas guardadas con el formato anterior (un solo tipo de hora)
+        (f.extras>0 && f.extrasDiurnas===undefined) ? `<div class="line"><span>Horas extras (${f.horasExtras} h × ${fnum(f.tarifaHora)})</span><span>${fnum(f.extras)}</span></div>`:"",
         f.comision>0 ? `<div class="line"><span>Comisión (${f.comisionPct}% de ${fnum(f.ventas)})</span><span>${fnum(f.comision)}</span></div>`:"",
         f.bonif>0 ? `<div class="line"><span>Bonificación (monto fijo)</span><span>${fnum(f.bonif)}</span></div>`:"",
         f.dietas>0 ? `<div class="line"><span>Dietas</span><span>${fnum(f.dietas)}</span></div>`:"",
