@@ -28,14 +28,12 @@ const DEFAULT_CFG = {
   actividad: "Fábrica de Cemento",
   direccion: "Juan Díaz, Calle 200, Ciudad de Panamá",
   horasSemana: 45,
-  numEmpleados: 12,
-  region: "1",
   cssEmpleado: 9.75,
   cssPatrono: 13.25,
   seEmpleado: 1.25,
   sePatrono: 1.5,
   riesgoProf: 0.56,
-  salarioMinimoHora: 2.36,   // fallback si no se selecciona actividad
+  salarioMinimoHora: 2.36,   // ajustable según decreto vigente (región/actividad)
   deduccionConjunta: 800,
   isrTramo1: 11000,          // hasta aquí 0%
   isrTramo2: 50000,          // 15% del exceso de tramo1 hasta tramo2
@@ -51,133 +49,6 @@ let state = {
 function saveEmp(){ DB.write(K_EMP, state.empleados); }
 function savePla(){ DB.write(K_PLA, state.planillas); }
 function saveCfg(){ DB.write(K_CFG, state.config); }
-
-/* ---------------- Salarios mínimos por actividad (2026-2027) ---------------- */
-const SALARIOS_MINIMOS = [
-  {actividad:"Agricultura, Ganaderia, Caza, Silvicultura, Acuicultura, Pesca (Nacional)", categoria:"Pequeña Empresa", region1:1.64, region2:1.64},
-  {actividad:"Agricultura, Ganaderia, Caza, Silvicultura, Acuicultura, Pesca (Nacional)", categoria:"Gran Empresa (11 empleados o mas)", region1:2.10, region2:2.10},
-  {actividad:"Actividades Bananeras (Nacional)", categoria:"", region1:2.58, region2:2.58},
-  {actividad:"Pesca (Nacional)", categoria:"Artesanal", region1:2.30, region2:2.30},
-  {actividad:"Pesca (Nacional)", categoria:"Industrial", region1:2.65, region2:2.65},
-  {actividad:"Agroindustrias", categoria:"Pequeña Empresa (parte agricola)", region1:1.67, region2:1.67},
-  {actividad:"Agroindustrias", categoria:"Gran Empresa (parte agricola)", region1:2.12, region2:2.12},
-  {actividad:"Agroindustrias", categoria:"Pequeña Empresa (parte procesamiento)", region1:2.37, region2:2.00},
-  {actividad:"Agroindustrias", categoria:"Gran Empresa (parte procesamiento)", region1:3.04, region2:2.49},
-  {actividad:"Explotacion de Canteras - Actividades Areneras (Nacional)", categoria:"", region1:3.20, region2:3.20},
-  {actividad:"Explotacion de Canteras - Minas Metalicas (Nacional)", categoria:"", region1:3.39, region2:3.39},
-  {actividad:"Explotacion de Canteras - Minas No Metalicas (Nacional)", categoria:"", region1:3.20, region2:3.20},
-  {actividad:"Industrias Manufactureras", categoria:"Pequeña Empresa", region1:2.32, region2:1.95},
-  {actividad:"Industrias Manufactureras", categoria:"Gran Empresa (16 empleados o mas)", region1:3.13, region2:2.58},
-  {actividad:"Destilacion, Rectificacion y mezcla de Bebidas Alcoholicas; Fabricacion de Pinturas, Barnices y productos de revestimiento", categoria:"", region1:3.08, region2:2.61},
-  {actividad:"Fabricacion de Cemento y/o Concreto", categoria:"", region1:3.39, region2:3.24},
-  {actividad:"Reparacion, Mantenimiento de maquinaria y equipo de refrigeracion", categoria:"", region1:3.15, region2:2.57},
-  {actividad:"Procesamiento de la Caña de Azucar (Nacional)", categoria:"", region1:3.12, region2:3.12},
-  {actividad:"Suministro de Electric., Gas, Vapor, Aire Acondicionado (Nacional)", categoria:"", region1:3.50, region2:3.50},
-  {actividad:"Produccion de Hielo", categoria:"", region1:3.07, region2:2.53},
-  {actividad:"Suministro de Agua, Alcantarillado, Gestion de Desechos y Actv. de Saneamiento (Nacional)", categoria:"", region1:3.50, region2:3.50},
-  {actividad:"Alcantarillado", categoria:"", region1:3.18, region2:2.63},
-  {actividad:"Recoleccion, Tratamiento y Eliminacion de Desechos", categoria:"", region1:3.21, region2:2.67},
-  {actividad:"Procesamiento y Recuperacion de Materiales de desecho", categoria:"", region1:3.04, region2:2.51},
-  {actividad:"Construccion", categoria:"", region1:3.51, region2:3.30},
-  {actividad:"Drenaje de Tierras Agricolas y Bosques (Nacional)", categoria:"", region1:2.12, region2:2.12},
-  {actividad:"Comercio al por Mayor y en Comisiones", categoria:"", region1:3.02, region2:2.48},
-  {actividad:"Venta de productos y subproductos derivados de la Caña de Azucar (Nacional)", categoria:"", region1:3.02, region2:3.02},
-  {actividad:"Tanques de Combustible", categoria:"", region1:3.04, region2:2.50},
-  {actividad:"Comercio al por Menor", categoria:"Pequeña Empresa", region1:2.37, region2:1.99},
-  {actividad:"Comercio al por Menor", categoria:"Gran Empresa (11 empleados o mas)", region1:3.02, region2:2.48},
-  {actividad:"Supermercados (empresas con 5 o mas sucursales)", categoria:"", region1:3.09, region2:2.54},
-  {actividad:"Estaciones de combustible", categoria:"", region1:3.02, region2:2.48},
-  {actividad:"Zonas Francas, Zonas Economicas Especiales", categoria:"", region1:3.77, region2:2.52},
-  {actividad:"Zona Libre de Colon", categoria:"", region1:3.44, region2:null},
-  {actividad:"Hoteles", categoria:"Pequeña Empresa", region1:2.38, region2:1.98},
-  {actividad:"Hoteles", categoria:"Gran Empresa (11 empleados o mas)", region1:2.96, region2:2.43},
-  {actividad:"Hoteles y Resorts con Franquicias; Hoteles con mas de 200 habitaciones; Hoteles de Ocasion, Moteles, Pensiones y Residenciales", categoria:"", region1:3.10, region2:2.55},
-  {actividad:"Restaurantes", categoria:"Pequeña Empresa", region1:2.32, region2:1.95},
-  {actividad:"Restaurantes", categoria:"Gran Empresa (11 empleados o mas)", region1:3.09, region2:2.54},
-  {actividad:"Discotecas, Bares y Cantinas (Nacional)", categoria:"", region1:3.40, region2:3.40},
-  {actividad:"Transporte", categoria:"", region1:3.16, region2:2.61},
-  {actividad:"Transporte de carga en zonas francas o economicas especiales", categoria:"Pequeña Empresa (hasta 10 trabajadores)", region1:3.47, region2:2.58},
-  {actividad:"Transporte de carga en zonas francas o economicas especiales", categoria:"Gran Empresa (11 empleados o mas)", region1:3.49, region2:2.60},
-  {actividad:"Transporte por Via Acuatica, Via Aerea y Activ. Complem.", categoria:"Pequeña Empresa (hasta 10 trabajadores)", region1:3.16, region2:2.58},
-  {actividad:"Transporte por Via Acuatica, Via Aerea y Activ. Complem.", categoria:"Gran Empresa (11 empleados o mas)", region1:3.18, region2:2.60},
-  {actividad:"Trabajadores Portuarios (Nacional)", categoria:"", region1:3.64, region2:3.64},
-  {actividad:"Aeropuertos Internacionales", categoria:"", region1:3.84, region2:3.84},
-  {actividad:"Conductores de Buses (Nacional)", categoria:"", region1:3.47, region2:3.47},
-  {actividad:"Conductores de Buses Colegiales", categoria:"", region1:3.02, region2:2.49},
-  {actividad:"Tripulantes de Cabina de Vuelos Internacionales (Nacional)", categoria:"", region1:5.01, region2:5.01},
-  {actividad:"Almacenamiento, Depositos y Correos", categoria:"", region1:3.02, region2:2.48},
-  {actividad:"Informacion y Comunicacion (Nacional)", categoria:"", region1:3.16, region2:3.16},
-  {actividad:"Actividades de Edicion", categoria:"", region1:3.16, region2:2.62},
-  {actividad:"Produccion de Programas de Radio y TV; Produccion de Peliculas, Videos, Sonidos; Salas de Cine; Agencias de Noticias", categoria:"", region1:3.16, region2:2.61},
-  {actividad:"Telecomunicaciones, Difusion Television (Nacional)", categoria:"", region1:3.47, region2:3.47},
-  {actividad:"Difusion de Radio - Licencia Nacional (Nacional)", categoria:"", region1:3.47, region2:3.47},
-  {actividad:"Difusion de Radio - Licencia Local (Nacional)", categoria:"", region1:3.40, region2:3.40},
-  {actividad:"Camarografos (Nacional)", categoria:"", region1:3.47, region2:3.47},
-  {actividad:"Actividades Financieras y de Seguro (Nacional)", categoria:"", region1:3.58, region2:3.58},
-  {actividad:"Casas de Empeño (Nacional)", categoria:"", region1:3.14, region2:3.14},
-  {actividad:"Actividades Inmobiliarias", categoria:"", region1:3.47, region2:3.10},
-  {actividad:"Centros Comerciales (mas de 50 locales) (Nacional)", categoria:"", region1:3.47, region2:3.47},
-  {actividad:"Actv. Administrativas y Servicios de Apoyo (Alquiler y Arrendamiento) (Nacional)", categoria:"", region1:3.12, region2:3.12},
-  {actividad:"Renta y Alquiler de Vehiculos Automotores (Nacional)", categoria:"", region1:3.43, region2:3.43},
-  {actividad:"Actividades de Internet Cafes", categoria:"", region1:2.82, region2:2.62},
-  {actividad:"Activ. de las Agencias de Empleo (Nacional)", categoria:"", region1:3.16, region2:3.16},
-  {actividad:"Activ. Agencias Viajes, Operadores Turisticos y Serv. Reserva", categoria:"", region1:3.09, region2:2.44},
-  {actividad:"Actividades de Servicio a Edificios y Paisajes (Nacional)", categoria:"", region1:2.98, region2:2.98},
-  {actividad:"Activ. de Serv. de Mantenimiento y Cuidado de Paisajes (Jardines, Areas Verdes) (Nacional)", categoria:"", region1:2.12, region2:2.12},
-  {actividad:"Activ. de Oficinas Administ., Soporte de Negocios; Fotocopiados (Nacional)", categoria:"", region1:2.98, region2:2.98},
-  {actividad:"Activ. de Seguridad e Investig. (Agencias Seguridad y Vigilancia) (Nacional)", categoria:"", region1:3.04, region2:3.04},
-  {actividad:"Actv. Profesionales, Cientificas y Tecnicas (Nacional)", categoria:"", region1:3.02, region2:3.02},
-  {actividad:"Actividades Veterinarias", categoria:"", region1:3.02, region2:2.48},
-  {actividad:"Firmas de Abogados, Contabilidad y Auditoria (15 empleados o mas) (Nacional)", categoria:"", region1:3.18, region2:3.18},
-  {actividad:"Firmas de Abogados, Contabilidad y Auditoria (14 o menos empleados) (Nacional)", categoria:"", region1:2.89, region2:2.89},
-  {actividad:"Abogados (Nacional)", categoria:"", region1:3.70, region2:3.70},
-  {actividad:"Periodistas de Radio, Periodicos y Television (Nacional)", categoria:"", region1:3.45, region2:3.45},
-  {actividad:"Mecanicos de Transporte Aereo (Nacional)", categoria:"", region1:4.92, region2:4.92},
-  {actividad:"Mecanicos de Transporte Terrestre (Nacional)", categoria:"", region1:3.45, region2:3.45},
-  {actividad:"Mecanicos de Transporte Maritimo (Nacional)", categoria:"", region1:3.83, region2:3.83},
-  {actividad:"Enseñanza (Personal Administrativo)", categoria:"", region1:3.09, region2:2.52},
-  {actividad:"Servicios Sociales y Relacionados con la Salud Humana", categoria:"", region1:3.22, region2:2.64},
-  {actividad:"Clinicas de Salud y Hospitales", categoria:"", region1:3.54, region2:2.66},
-  {actividad:"Tecnicos de Salud (Nacional)", categoria:"", region1:3.54, region2:3.54},
-  {actividad:"Artes, Entretenimiento y Creatividad (Nacional)", categoria:"", region1:3.11, region2:3.11},
-  {actividad:"Actividades de juegos de azar y apuestas (Nacional)", categoria:"", region1:3.63, region2:3.63},
-  {actividad:"Casinos (Nacional) - Talladores, Gerente de Casino, Jefes de Sala, Operadores de CCTV", categoria:"", region1:3.72, region2:3.72},
-  {actividad:"Casinos (Nacional) - Seguridad, Aseadores, Saloneros, Oficinistas, Cajeros, etc.", categoria:"", region1:3.61, region2:3.61},
-  {actividad:"Gimnasios (Nacional)", categoria:"", region1:3.43, region2:3.43},
-  {actividad:"Otras Actividades de Servicios", categoria:"", region1:3.12, region2:2.55},
-  {actividad:"Organizaciones Sin Fines de Lucro", categoria:"", region1:2.98, region2:2.45},
-  {actividad:"Reparacion y Mantenimiento de Computadoras (Nacional)", categoria:"", region1:2.96, region2:2.96},
-  {actividad:"Reparacion y Mantenimiento de Enseres de uso Personal y Domestico", categoria:"Pequeña Empresa", region1:2.32, region2:1.94},
-  {actividad:"Reparacion y Mantenimiento de Enseres de uso Personal y Domestico", categoria:"Gran Empresa (11 empleados o mas)", region1:2.98, region2:2.52},
-  {actividad:"Propiedades Horizontales Residenciales (mas de 10 plantas) y Asoc. de Inquilinos (Nacional)", categoria:"", region1:3.43, region2:3.43},
-  {actividad:"Spas, Clinicas Esteticas", categoria:"", region1:3.43, region2:2.57},
-  {actividad:"Actividades de Organizaciones y Organos Extraterritoriales (Nacional)", categoria:"", region1:3.16, region2:3.16},
-  {actividad:"Trabajador Domestico (monto MENSUAL, no por hora)", categoria:"", region1:350.00, region2:320.00}
-];
-
-function buscarSalarioMinimo(actividad, numEmpleados, region){
-  const matches = SALARIOS_MINIMOS.filter(s => s.actividad === actividad);
-  if(!matches.length) return null;
-  if(matches.length === 1){
-    const rate = region === "2" ? matches[0].region2 : matches[0].region1;
-    return rate !== null ? rate : (matches[0].region1 || matches[0].region2);
-  }
-  const num = Number(numEmpleados)||0;
-  const gran = matches.find(m => /gran empresa/i.test(m.categoria) && /\d+/.test(m.categoria));
-  const peq = matches.find(m => /peque[ñn]a empresa/i.test(m.categoria));
-  if(gran){
-    const threshold = parseInt((gran.categoria.match(/(\d+)\s*empleados/) || ["","11"])[1], 10);
-    const chosen = num >= threshold ? gran : (peq || gran);
-    const rate = region === "2" ? chosen.region2 : chosen.region1;
-    return rate !== null ? rate : (chosen.region1 || chosen.region2);
-  }
-  const rate = region === "2" ? matches[0].region2 : matches[0].region1;
-  return rate !== null ? rate : (matches[0].region1 || matches[0].region2);
-}
-
-function nombreRegion(region){
-  return region === "2" ? "Región 2" : "Región 1";
-}
 
 /* ---------------- Utilidades ---------------- */
 const $ = sel => document.querySelector(sel);
@@ -198,16 +69,6 @@ function toast(msg){
 function salarioMensualDe(emp){
   const cfg = state.config;
   if(emp.esSalarioMinimo){
-    if(emp.actividadEconomica){
-      const tarifa = buscarSalarioMinimo(emp.actividadEconomica, cfg.numEmpleados, cfg.region);
-      if(tarifa !== null){
-        // Trabajador doméstico usa monto mensual, no por hora
-        if(/trabajador doméstico/i.test(emp.actividadEconomica)){
-          return r2(tarifa);
-        }
-        return r2(tarifa * cfg.horasSemana * 4.3333);
-      }
-    }
     return r2(cfg.salarioMinimoHora * cfg.horasSemana * 4.3333);
   }
   return Number(emp.salarioBase)||0;
@@ -220,12 +81,12 @@ const SEED = [
    descuentos:[{concepto:"Mueblería", monto:200, periodicidad:"mensual"}]},
   {nombre:"Alejandro Mirones", cedula:"10-400-390", estadoCivil:"soltero", declaraConjunta:false, cargo:"Supervisor de Planta", salarioBase:680, esSalarioMinimo:false, anioInicio:2012, grupo:1,
    descuentos:[{concepto:"Mueblería", monto:120, periodicidad:"mensual"}]},
-  {nombre:"Jairo Fernández", cedula:"5-789-352", estadoCivil:"soltero", declaraConjunta:false, cargo:"Aseador", salarioBase:0, esSalarioMinimo:true, actividadEconomica:"Servicios Sociales y Relacionados con la Salud Humana", anioInicio:2013, grupo:1,
+  {nombre:"Jairo Fernández", cedula:"5-789-352", estadoCivil:"soltero", declaraConjunta:false, cargo:"Aseador", salarioBase:0, esSalarioMinimo:true, anioInicio:2013, grupo:1,
    descuentos:[{concepto:"Ahorro en la empresa", monto:50, periodicidad:"mensual"}]},
   // Grupo 2 — comisiones (2% de las ventas)
   {nombre:"Cesar García", cedula:"4-590-678", estadoCivil:"casado", declaraConjunta:false, cargo:"Vendedor de Calle", salarioBase:650, esSalarioMinimo:false, anioInicio:2009, grupo:2,
    descuentos:[{concepto:"Mueblería", monto:250, periodicidad:"mensual"}]},
-  {nombre:"Amanda Iglesias", cedula:"10-400-390", estadoCivil:"soltero", declaraConjunta:false, cargo:"Vendedora de Agencia", salarioBase:0, esSalarioMinimo:true, actividadEconomica:"Comercio al por Menor", anioInicio:2011, grupo:2,
+  {nombre:"Amanda Iglesias", cedula:"10-400-390", estadoCivil:"soltero", declaraConjunta:false, cargo:"Vendedora de Agencia", salarioBase:0, esSalarioMinimo:true, anioInicio:2011, grupo:2,
    descuentos:[{concepto:"Mueblería", monto:220, periodicidad:"mensual"}]},
   {nombre:"Vladimir Cáceres", cedula:"5-789-352", estadoCivil:"soltero", declaraConjunta:false, cargo:"Vendedor Supervisor", salarioBase:800, esSalarioMinimo:false, anioInicio:2008, grupo:2,
    descuentos:[{concepto:"Ahorro en la empresa", monto:50, periodicidad:"mensual"}]},
@@ -464,7 +325,7 @@ function viewPersonal(){
       <td class="nowrap">${esc(e.cedula)}</td>
       <td>${e.estadoCivil === "casado" ? "Casado(a)" : "Soltero(a)"}${e.declaraConjunta ? '<br><span class="badge green">Declara conjuntamente</span>' : ""}</td>
       <td class="center"><span class="badge">Grupo ${e.grupo||"—"}</span></td>
-      <td class="num">${fmt(mensual)}${e.esSalarioMinimo ? `<br><span class="badge orange">Salario mínimo</span>${e.actividadEconomica ? `<br><span class="small muted">${esc(e.actividadEconomica)}</span>` : ""}` : ""}</td>
+      <td class="num">${fmt(mensual)}${e.esSalarioMinimo ? '<br><span class="badge orange">Salario mínimo</span>' : ""}</td>
       <td class="center">${esc(e.anioInicio||"—")}</td>
       <td class="nowrap">
         <a class="btn sm secondary" href="#/expediente/${e.id}">Expediente</a>
@@ -499,16 +360,7 @@ function viewPersonal(){
           </select>
         </div>
         <div class="field"><label>Salario base mensual (B/.)</label><input id="f_salario" type="number" step="0.01" min="0" placeholder="0.00"></div>
-        <div class="field"><label class="check" style="margin-top:1.4rem"><input type="checkbox" id="f_minimo" onchange="toggleActividadMinimo()"> Devenga salario mínimo</label></div>
-        <div class="field wide" id="f_actividadWrap" style="display:none">
-          <label>Actividad económica *</label>
-          <div class="search-select">
-            <input type="text" id="f_actividadSearch" placeholder="Buscar actividad..." autocomplete="off" oninput="filtrarActividades()" onfocus="filtrarActividades()">
-            <div id="f_actividadDropdown" class="search-dropdown"></div>
-            <input type="hidden" id="f_actividad">
-            <span id="f_actividadLabel" class="search-selected"></span>
-          </div>
-        </div>
+        <div class="field"><label class="check" style="margin-top:1.4rem"><input type="checkbox" id="f_minimo"> Devenga salario mínimo</label></div>
         <div class="field"><label class="check" style="margin-top:1.4rem"><input type="checkbox" id="f_conjunta"> Declara I.S.R. conjuntamente (−B/.800)</label></div>
       </div>
       <h3 class="mt">Descuentos recurrentes autorizados</h3>
@@ -555,59 +407,9 @@ window.agregarDescFila = function(d){
   $("#descList").appendChild(div);
 };
 
-function uniqueActividades(){
-  const seen = new Set();
-  return SALARIOS_MINIMOS.map(s => s.actividad).filter(a => { if(seen.has(a)) return false; seen.add(a); return true; });
-}
-
-window.toggleActividadMinimo = function(){
-  const checked = $("#f_minimo").checked;
-  $("#f_actividadWrap").style.display = checked ? "" : "none";
-  if(checked){
-    $("#f_salario").value = "";
-    $("#f_salario").disabled = true;
-  } else {
-    $("#f_salario").disabled = false;
-    $("#f_actividad").value = "";
-    $("#f_actividadLabel").textContent = "";
-    $("#f_actividadSearch").value = "";
-  }
-};
-
-window.filtrarActividades = function(){
-  const q = ($("#f_actividadSearch").value || "").toLowerCase().trim();
-  const acts = uniqueActividades();
-  const filtered = q ? acts.filter(a => a.toLowerCase().includes(q)) : acts;
-  const dd = $("#f_actividadDropdown");
-  dd.innerHTML = filtered.map(a =>
-    `<div class="search-option" data-val="${esc(a)}" onclick="seleccionarActividad(this)">${esc(a)}</div>`
-  ).join("") || `<div class="search-option disabled">Sin resultados</div>`;
-  dd.style.display = "block";
-};
-
-window.seleccionarActividad = function(el){
-  const val = el.dataset.val;
-  $("#f_actividad").value = val;
-  $("#f_actividadLabel").textContent = val;
-  $("#f_actividadSearch").value = "";
-  $("#f_actividadDropdown").style.display = "none";
-};
-
-document.addEventListener("click", function(e){
-  if(!e.target.closest(".search-select")){
-    const dd = document.getElementById("f_actividadDropdown");
-    if(dd) dd.style.display = "none";
-  }
-});
-
 window.guardarEmp = function(ev){
   ev.preventDefault();
   const id = $("#f_id").value;
-  const esMinimo = $("#f_minimo").checked;
-  const actividad = $("#f_actividad").value;
-  if(esMinimo && !actividad){
-    toast("Seleccione la actividad económica para salario mínimo"); return false;
-  }
   const emp = {
     id: id || uid(),
     nombre: $("#f_nombre").value.trim(),
@@ -616,9 +418,8 @@ window.guardarEmp = function(ev){
     cargo: $("#f_cargo").value.trim(),
     anioInicio: Number($("#f_anio").value)||null,
     grupo: Number($("#f_grupo").value),
-    salarioBase: esMinimo ? 0 : Number($("#f_salario").value)||0,
-    esSalarioMinimo: esMinimo,
-    actividadEconomica: esMinimo ? actividad : "",
+    salarioBase: Number($("#f_salario").value)||0,
+    esSalarioMinimo: $("#f_minimo").checked,
     declaraConjunta: $("#f_conjunta").checked,
     descuentos: [...document.querySelectorAll("#descList .form-grid")].map(row => ({
       concepto: row.querySelector(".d_concepto").value.trim(),
@@ -647,11 +448,6 @@ window.editarEmp = function(id){
   $("#f_anio").value = e.anioInicio||""; $("#f_grupo").value = e.grupo||1;
   $("#f_salario").value = e.salarioBase||""; $("#f_minimo").checked = !!e.esSalarioMinimo;
   $("#f_conjunta").checked = !!e.declaraConjunta;
-  toggleActividadMinimo();
-  if(e.esSalarioMinimo && e.actividadEconomica){
-    $("#f_actividad").value = e.actividadEconomica;
-    $("#f_actividadLabel").textContent = e.actividadEconomica;
-  }
   $("#descList").innerHTML = "";
   (e.descuentos||[]).forEach(d => agregarDescFila(d));
   $("#empFormCard").scrollIntoView({behavior:"smooth"});
@@ -661,7 +457,6 @@ window.limpiarForm = function(){
   $("#empForm").reset(); $("#f_id").value = "";
   $("#descList").innerHTML = "";
   $("#empFormTitle").textContent = "Registrar colaborador";
-  toggleActividadMinimo();
 };
 
 window.borrarEmp = function(id){
@@ -722,7 +517,7 @@ function viewExpediente(id){
         <div class="exp-item"><b>Cargo</b><span>${esc(e.cargo)}</span></div>
         <div class="exp-item"><b>Grupo de pago</b><span>Grupo ${e.grupo||"—"}</span></div>
         <div class="exp-item"><b>Año de inicio de labores</b><span>${e.anioInicio||"—"}${anios!==null?` (${anios} años de servicio)`:""}</span></div>
-        <div class="exp-item"><b>Salario base mensual</b><span>${fmt(mensual)}${e.esSalarioMinimo ? ` (salario mínimo — ${esc(e.actividadEconomica||"—")}, ${nombreRegion(state.config.region)})` : ""}</span></div>
+        <div class="exp-item"><b>Salario base mensual</b><span>${fmt(mensual)}${e.esSalarioMinimo?" (salario mínimo)":""}</span></div>
         <div class="exp-item"><b>Salario quincenal</b><span>${fmt(mensual/2)}</span></div>
       </div>
     </div>
@@ -1168,15 +963,7 @@ function viewConfig(){
           <div class="field"><label>Dirección</label><input id="c_direccion" value="${esc(c.direccion)}"></div>
           <div class="field"><label>Horas por semana</label><input id="c_horas" type="number" step="0.5" value="${c.horasSemana}"></div>
           <div class="field"><label>Riesgo profesional (%)</label><input id="c_riesgo" type="number" step="0.01" value="${c.riesgoProf}"></div>
-          <div class="field"><label>Número de empleados</label><input id="c_numEmpleados" type="number" min="1" value="${c.numEmpleados||1}"></div>
-          <div class="field"><label>Región</label>
-            <select id="c_region">
-              <option value="1" ${c.region==="1"?"selected":""}>Región 1</option>
-              <option value="2" ${c.region==="2"?"selected":""}>Región 2</option>
-            </select>
-          </div>
         </div>
-        <p class="small muted mt">El número de empleados se usa para determinar la categoría (Pequeña/Gran Empresa) al calcular salarios mínimos por actividad.</p>
       </div>
       <div class="card">
         <h3>Cuotas obrero-patronales</h3>
@@ -1221,8 +1008,6 @@ window.guardarConfig = function(ev){
     actividad: $("#c_actividad").value.trim(),
     direccion: $("#c_direccion").value.trim(),
     horasSemana: Number($("#c_horas").value)||45,
-    numEmpleados: Number($("#c_numEmpleados").value)||1,
-    region: $("#c_region").value,
     riesgoProf: Number($("#c_riesgo").value)||0.56,
     cssEmpleado: Number($("#c_cssE").value)||9.75,
     cssPatrono: Number($("#c_cssP").value)||13.25,
