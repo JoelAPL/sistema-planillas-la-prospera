@@ -33,12 +33,12 @@ el flujograma del examen semestral:
 | 🖨️ ✉️ | **Todos los reportes tienen opción de imprimir y enviar por correo.** |
 | ⚙️ **Configuración** | Tasas de CSS, Seguro Educativo, riesgo profesional, salario mínimo y tramos del I.S.R., todo editable. |
 
-### 🎓 Datos del semestral incluidos
+### 🎓 Datos del Grupo 6 incluidos
 
-Dos botones de demostración cargan al instante:
-
-- **12 colaboradores de los Grupos 1–4** (horas extras · comisiones · dietas · primas de producción)
-- **Novedades de la 2.ª quincena de junio de 2015** (extras, ventas, dietas, primas, adelantos y bonificación general del 10 %)
+Dos botones de demostración cargan al instante los 4 colaboradores reales del **Grupo 6**
+(agente de planta, supervisora de planta, asistente de gerencia y agente de ventas) con las
+novedades de la **2.ª quincena de junio de 2026**: horas extras, prima de producción,
+dieta y comisión sobre ventas, más la **bonificación fija de B/.120** por colaborador.
 
 ## 📐 Metodología de cálculo (Teoría de Planillas 2025)
 
@@ -75,7 +75,7 @@ python -m http.server 8123   # → http://localhost:8123
 
 ## 🗺️ Flujo sugerido para la demostración
 
-1. **Inicio** → «Cargar colaboradores del semestral (Grupos 1–4)»
+1. **Inicio** → «Cargar colaboradores del Grupo 6»
 2. **Personal** → editar un colaborador y guardar (se actualiza al instante)
 3. **Planilla** → «Precargar novedades del semestral» → «Calcular y guardar planilla»
 4. **Informes** → recorrer las 3 pestañas → **Imprimir** / **Enviar por correo**

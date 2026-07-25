@@ -74,57 +74,34 @@ function salarioMensualDe(emp){
   return Number(emp.salarioBase)||0;
 }
 
-/* ---------------- Datos de ejemplo del semestral ---------------- */
+/* ---------------- Datos del Grupo 6 (semestral) ---------------- */
 const SEED = [
-  // Grupo 1 — horas extras
-  {nombre:"Rubén Palacios", cedula:"4-590-678", estadoCivil:"casado", declaraConjunta:false, cargo:"Asistente de Gerencia", salarioBase:900, esSalarioMinimo:false, anioInicio:2010, grupo:1,
-   descuentos:[{concepto:"Mueblería", monto:200, periodicidad:"mensual"}]},
-  {nombre:"Alejandro Mirones", cedula:"10-400-390", estadoCivil:"soltero", declaraConjunta:false, cargo:"Supervisor de Planta", salarioBase:680, esSalarioMinimo:false, anioInicio:2012, grupo:1,
+  {nombre:"Omero Urriola", cedula:"8-320-344", estadoCivil:"casado", declaraConjunta:true, cargo:"Agente de Planta", salarioBase:680, esSalarioMinimo:false, anioInicio:null, grupo:6,
+   descuentos:[{concepto:"Préstamo hipotecario", monto:200, periodicidad:"mensual"}]},
+  {nombre:"Judith Villalobos", cedula:"9-410-390", estadoCivil:"casado", declaraConjunta:true, cargo:"Supervisora de Planta", salarioBase:910, esSalarioMinimo:false, anioInicio:null, grupo:6,
+   descuentos:[{concepto:"Mueblería", monto:280, periodicidad:"mensual"}]},
+  {nombre:"Ana María Bustamante", cedula:"4-590-678", estadoCivil:"casado", declaraConjunta:false, cargo:"Asistente de Gerencia", salarioBase:1100, esSalarioMinimo:false, anioInicio:null, grupo:6,
    descuentos:[{concepto:"Mueblería", monto:120, periodicidad:"mensual"}]},
-  {nombre:"Jairo Fernández", cedula:"5-789-352", estadoCivil:"soltero", declaraConjunta:false, cargo:"Aseador", salarioBase:0, esSalarioMinimo:true, anioInicio:2013, grupo:1,
-   descuentos:[{concepto:"Ahorro en la empresa", monto:50, periodicidad:"mensual"}]},
-  // Grupo 2 — comisiones (2% de las ventas)
-  {nombre:"Cesar García", cedula:"4-590-678", estadoCivil:"casado", declaraConjunta:false, cargo:"Vendedor de Calle", salarioBase:650, esSalarioMinimo:false, anioInicio:2009, grupo:2,
-   descuentos:[{concepto:"Mueblería", monto:250, periodicidad:"mensual"}]},
-  {nombre:"Amanda Iglesias", cedula:"10-400-390", estadoCivil:"soltero", declaraConjunta:false, cargo:"Vendedora de Agencia", salarioBase:0, esSalarioMinimo:true, anioInicio:2011, grupo:2,
-   descuentos:[{concepto:"Mueblería", monto:220, periodicidad:"mensual"}]},
-  {nombre:"Vladimir Cáceres", cedula:"5-789-352", estadoCivil:"soltero", declaraConjunta:false, cargo:"Vendedor Supervisor", salarioBase:800, esSalarioMinimo:false, anioInicio:2008, grupo:2,
-   descuentos:[{concepto:"Ahorro en la empresa", monto:50, periodicidad:"mensual"}]},
-  // Grupo 3 — dietas
-  {nombre:"Rubén Blades", cedula:"4-590-678", estadoCivil:"casado", declaraConjunta:false, cargo:"Asistente de Gerencia", salarioBase:1200, esSalarioMinimo:false, anioInicio:2007, grupo:3,
-   descuentos:[{concepto:"Mueblería", monto:300, periodicidad:"mensual"}]},
-  {nombre:"Alejandro Fernández", cedula:"10-400-390", estadoCivil:"soltero", declaraConjunta:false, cargo:"Supervisor de Planta", salarioBase:1000, esSalarioMinimo:false, anioInicio:2010, grupo:3,
-   descuentos:[{concepto:"Mueblería", monto:500, periodicidad:"mensual"}]},
-  {nombre:"Vicente Fernández", cedula:"5-789-352", estadoCivil:"soltero", declaraConjunta:false, cargo:"Analista de Recursos Humanos", salarioBase:980, esSalarioMinimo:false, anioInicio:2012, grupo:3,
-   descuentos:[{concepto:"Ahorro en la empresa", monto:250, periodicidad:"mensual"}]},
-  // Grupo 4 — prima de producción
-  {nombre:"José González", cedula:"4-590-678", estadoCivil:"casado", declaraConjunta:false, cargo:"Reparador de Calle", salarioBase:690, esSalarioMinimo:false, anioInicio:2011, grupo:4,
-   descuentos:[{concepto:"Mueblería", monto:250, periodicidad:"mensual"}]},
-  {nombre:"Julio Iglesias", cedula:"10-400-390", estadoCivil:"soltero", declaraConjunta:false, cargo:"Supervisor de Planta", salarioBase:800, esSalarioMinimo:false, anioInicio:2009, grupo:4,
-   descuentos:[{concepto:"Mueblería", monto:320, periodicidad:"mensual"}]},
-  {nombre:"Mariano Ramos", cedula:"5-789-352", estadoCivil:"soltero", declaraConjunta:false, cargo:"Analista Supervisor", salarioBase:900, esSalarioMinimo:false, anioInicio:2013, grupo:4,
-   descuentos:[{concepto:"Ahorro en la empresa", monto:200, periodicidad:"mensual"}]}
+  {nombre:"Luisa Sanjur", cedula:"4-500-500", estadoCivil:"soltero", declaraConjunta:false, cargo:"Agente de Ventas", salarioBase:1000, esSalarioMinimo:false, anioInicio:null, grupo:6,
+   descuentos:[{concepto:"Préstamo de auto", monto:400, periodicidad:"mensual"}]}
 ];
-// Novedades del semestral (2da quincena junio 2015) por cédula+grupo
+// Novedades del Grupo 6 (2da quincena junio 2026) por cédula+grupo
 const SEED_NOVEDADES = {
-  "1|Rubén Palacios":    {horasExtras:7, recargo:25, adelanto:0},
-  "1|Alejandro Mirones": {horasExtras:7, recargo:25, adelanto:60},
-  "1|Jairo Fernández":   {horasExtras:5, recargo:25, adelanto:0},
-  "2|Cesar García":      {ventas:35000, comisionPct:2, adelanto:0},
-  "2|Amanda Iglesias":   {ventas:60000, comisionPct:2, adelanto:50},
-  "2|Vladimir Cáceres":  {ventas:55000, comisionPct:2, adelanto:0},
-  "3|Rubén Blades":      {dietas:3000, adelanto:0},
-  "3|Alejandro Fernández":{dietas:5000, adelanto:0},
-  "3|Vicente Fernández": {dietas:700, adelanto:0},
-  "4|José González":     {primaProd:600, adelanto:0},
-  "4|Julio Iglesias":    {primaProd:3000, adelanto:250},   // 2% de 150,000
-  "4|Mariano Ramos":     {primaProd:1100, adelanto:0}      // 2% de 55,000
+  // Omero: 4 horas extra el día 23 + 4 horas el día 30 = 8 horas (recargo 25% asumido, el documento no lo especifica)
+  "6|Omero Urriola":        {horasExtras:8, recargo:25, adelanto:0},
+  // Judith: prima de producción — después de 100,000 kilos, $2.00 por cada 400 kilos; producción adicional 70,000 kilos
+  // (70,000 / 400) x $2.00 = $350.00
+  "6|Judith Villalobos":    {primaProd:350, adelanto:0},
+  // Ana María: dieta de $670 por supervisión en provincias
+  "6|Ana María Bustamante": {dietas:670, adelanto:0},
+  // Luisa: comisión 3% sobre ventas de la quincena ($10,990)
+  "6|Luisa Sanjur":         {ventas:10990, comisionPct:3, adelanto:0}
 };
 
 /* =====================================================================
    MOTOR DE CÁLCULO DE PLANILLA (quincenal)
    ===================================================================== */
-function calcularFila(emp, nov, bonifPct){
+function calcularFila(emp, nov, bonifMonto){
   const cfg = state.config;
   const mensual = salarioMensualDe(emp);
   const salarioBaseQ = r2(mensual / 2);
@@ -140,8 +117,8 @@ function calcularFila(emp, nov, bonifPct){
   const comisionPct = Number(nov.comisionPct)||0;
   const comision = r2(ventas * comisionPct/100);
 
-  // --- Bonificación (del salario del período)
-  const bonif = r2(salarioBaseQ * (Number(bonifPct)||0)/100);
+  // --- Bonificación (monto fijo por colaborador en el período)
+  const bonif = r2(Number(bonifMonto)||0);
 
   // --- Dietas: Art.91 — cotiza CSS solo el exceso del 25% del salario mensual
   const dietas = Number(nov.dietas)||0;
@@ -189,7 +166,7 @@ function calcularFila(emp, nov, bonifPct){
     estadoCivil: emp.estadoCivil, declaraConjunta: !!emp.declaraConjunta,
     salarioMensual: r2(mensual), salarioBase: salarioBaseQ,
     horasExtras: horas, recargo, extras, tarifaHora: r2(tarifaHora),
-    ventas, comisionPct, comision, bonif, bonifPct: Number(bonifPct)||0,
+    ventas, comisionPct, comision, bonif, bonifMonto: r2(Number(bonifMonto)||0),
     dietas, dietaExenta, dietaGravable, prima, primaExenta, primaGravable,
     otrosIngresos, salarioTotal, baseCSS,
     css, se, isr, isrDetalle: isrDet,
@@ -259,7 +236,7 @@ function viewInicio(){
   const nEmp = state.empleados.length;
   const nPla = state.planillas.length;
   const seedBtn = nEmp === 0
-    ? `<button class="btn success" onclick="cargarEjemplo()">⬇ Cargar colaboradores del semestral (Grupos 1–4)</button>`
+    ? `<button class="btn success" onclick="cargarEjemplo()">⬇ Cargar colaboradores del Grupo 6</button>`
     : "";
   return `
   <div class="hero">
@@ -312,7 +289,7 @@ function viewInicio(){
 window.cargarEjemplo = function(){
   SEED.forEach(e => state.empleados.push(Object.assign({id: uid()}, e, {descuentos: e.descuentos.map(d=>({...d}))})));
   saveEmp();
-  toast("12 colaboradores del semestral cargados (Grupos 1–4)");
+  toast("4 colaboradores del Grupo 6 cargados");
   navigate();
 };
 
@@ -351,14 +328,7 @@ function viewPersonal(){
         </div>
         <div class="field"><label>Cargo *</label><input id="f_cargo" required placeholder="Ej. Supervisor de Planta"></div>
         <div class="field"><label>Año de inicio de labores</label><input id="f_anio" type="number" min="1950" max="2100" placeholder="Ej. 2012"></div>
-        <div class="field"><label>Grupo de pago</label>
-          <select id="f_grupo">
-            <option value="1">Grupo 1 — Horas extras</option>
-            <option value="2">Grupo 2 — Comisiones</option>
-            <option value="3">Grupo 3 — Dietas</option>
-            <option value="4">Grupo 4 — Prima de producción</option>
-          </select>
-        </div>
+        <input type="hidden" id="f_grupo" value="6">
         <div class="field"><label>Salario base mensual (B/.)</label><input id="f_salario" type="number" step="0.01" min="0" placeholder="0.00"></div>
         <div class="field"><label class="check" style="margin-top:1.4rem"><input type="checkbox" id="f_minimo"> Devenga salario mínimo</label></div>
         <div class="field"><label class="check" style="margin-top:1.4rem"><input type="checkbox" id="f_conjunta"> Declara I.S.R. conjuntamente (−B/.800)</label></div>
@@ -378,7 +348,7 @@ function viewPersonal(){
       <h3 style="margin:0">Colaboradores registrados (${state.empleados.length})</h3>
       <div class="btn-row">
         <a class="btn secondary sm" href="#/reporte-grupal">📋 Reporte grupal (P)</a>
-        ${state.empleados.length===0 ? `<button class="btn success sm" onclick="cargarEjemplo()">⬇ Cargar datos del semestral</button>`:""}
+        ${state.empleados.length===0 ? `<button class="btn success sm" onclick="cargarEjemplo()">⬇ Cargar colaboradores del Grupo 6</button>`:""}
       </div>
     </div>
     <div class="table-wrap mt">
@@ -599,9 +569,9 @@ function viewPlanilla(){
 
   <div class="card">
     <div class="form-grid">
-      <div class="field wide"><label>Nombre del período *</label><input id="p_nombre" value="Segunda quincena de junio de 2015"></div>
-      <div class="field"><label>Fecha de pago</label><input id="p_fecha" type="date" value="2015-06-30"></div>
-      <div class="field"><label>Bonificación general (% del salario)</label><input id="p_bonif" type="number" step="0.1" min="0" value="10"></div>
+      <div class="field wide"><label>Nombre del período *</label><input id="p_nombre" value="Segunda quincena de junio de 2026"></div>
+      <div class="field"><label>Fecha de pago</label><input id="p_fecha" type="date" value="2026-06-30"></div>
+      <div class="field"><label>Bonificación general (monto fijo B/.)</label><input id="p_bonif" type="number" step="0.01" min="0" value="120"></div>
       <div class="field"><label>Grupo a incluir</label><select id="p_grupo" onchange="renderCaptura()">${opts}</select></div>
       <div class="field"><label>&nbsp;</label><button class="btn sm ghost" onclick="precargarNovedades()">⬇ Precargar novedades del semestral</button></div>
     </div>
@@ -688,7 +658,7 @@ window.calcularPlanilla = function(){
     id: uid(),
     nombre,
     fechaPago: $("#p_fecha").value,
-    bonifPct: bonif,
+    bonifMonto: bonif,
     grupo: $("#p_grupo").value,
     creada: new Date().toISOString(),
     config: {...state.config},
@@ -880,7 +850,7 @@ function viewInforme(id, tab){
       const ingresoLines = [
         f.extras>0 ? `<div class="line"><span>Horas extras (${f.horasExtras} h × ${fnum(f.tarifaHora)} + ${f.recargo}%)</span><span>${fnum(f.extras)}</span></div>`:"",
         f.comision>0 ? `<div class="line"><span>Comisión (${f.comisionPct}% de ${fnum(f.ventas)})</span><span>${fnum(f.comision)}</span></div>`:"",
-        f.bonif>0 ? `<div class="line"><span>Bonificación (${f.bonifPct}%)</span><span>${fnum(f.bonif)}</span></div>`:"",
+        f.bonif>0 ? `<div class="line"><span>Bonificación (monto fijo)</span><span>${fnum(f.bonif)}</span></div>`:"",
         f.dietas>0 ? `<div class="line"><span>Dietas</span><span>${fnum(f.dietas)}</span></div>`:"",
         f.prima>0 ? `<div class="line"><span>Prima de producción</span><span>${fnum(f.prima)}</span></div>`:""
       ].join("");
@@ -980,7 +950,7 @@ function viewConfig(){
         <div class="form-grid">
           <div class="field"><label>Tarifa por hora (B/.)</label><input id="c_sm" type="number" step="0.01" value="${c.salarioMinimoHora}"></div>
         </div>
-        <p class="small muted mt">Con ${c.horasSemana} h/semana equivale a ≈ ${fmt(smMensual)} mensuales (tarifa × horas semanales × 4.3333). Ajuste la tarifa según el decreto de salario mínimo vigente para la región y actividad económica.</p>
+        <p class="small muted mt">Con ${c.horasSemana} h/semana equivale a ≈ ${fmt(smMensual)} mensuales (tarifa × horas semanales × 4.3333). Ajuste la tarifa según el Decreto Ejecutivo N.º 13 del 31 de diciembre de 2025 (salario mínimo vigente) para la región y actividad económica.</p>
       </div>
       <div class="card">
         <h3>Impuesto sobre la renta (Ley 8 de 2010)</h3>
